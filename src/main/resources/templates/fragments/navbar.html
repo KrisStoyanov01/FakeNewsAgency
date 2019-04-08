@@ -22,7 +22,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" th:href="@{/viruses/show}">Show</a>
-                            <th:block sec:authorize="hasRole('ROLE_ADMIN') and hasRole('USER') and hasRole('MODERATOR')">
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN') and hasRole('USER')">
                             <a class="dropdown-item" th:href="@{/viruses/add}">Add</a>
                             </th:block>
                         </div>
