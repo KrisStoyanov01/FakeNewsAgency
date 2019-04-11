@@ -1,5 +1,6 @@
 package fakenewsagency.web.controllers;
 
+import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.models.binding.UserRegisterBindingModel;
 import fakenewsagency.domain.models.service.UserServiceModel;
 import fakenewsagency.service.UserService;
@@ -29,16 +30,16 @@ public class UserController extends BaseController{
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView register(ModelAndView modelAndView){
-
+    @PageTitle("Register")
+    public ModelAndView register() {
         return super.view("register");
     }
 
     @PostMapping("/register")
-    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model,
-                                        ModelAndView modelAndView){
-        if(!model.getPassword().equals(model.getConfirmPassword())){
-            throw new IllegalArgumentException(("Passwords don't match!"));
+    @PreAuthorize("isAnonymous()")
+    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model) {
+        if (!model.getPassword().equals(model.getConfirmPassword())) {
+            return super.view("register");
         }
 
         this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
@@ -48,10 +49,9 @@ public class UserController extends BaseController{
 
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView login(ModelAndView modelAndView){
-
-        modelAndView.setViewName("login");
-        return modelAndView;
+    @PageTitle("Login")
+    public ModelAndView login() {
+        return super.view("login");
     }
 
     @GetMapping("/logout")
