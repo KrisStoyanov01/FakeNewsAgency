@@ -1,0 +1,27 @@
+<th:block th:fragment="virus-form" th:object="${articleBindingModel}">
+    <div class="form-group">
+        <label for="add-product-title" class="font-weight-bold">Title</label>
+        <input type="text" class="form-control text-center" id="add-product-title" name="title">
+    </div>
+    <div class="form-group">
+        <label for="add-product-content" class="font-weight-bold">Content</label>
+        <textarea name="content" id="add-product-content" cols="41" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="add-article-category">Category</label>
+        <select id="add-article-category" class="form-control" th:field="*{articleCategory}">
+            <!--  missing this in the last select-->
+            <th:block th:each="articleCategory : ${categories}">
+                <option th:value="${category}" th:text="${category}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="add-article-date">Date Created</label>
+        <input type="date" id="add-article-date" class="form-control" th:field="*{createdOn}" th:value="*{createdOn}">
+    </div>
+    <hr class="hr-2 bg-dark w-25">
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn btn-success">Add Article</button>
+    </div>
+</th:block>

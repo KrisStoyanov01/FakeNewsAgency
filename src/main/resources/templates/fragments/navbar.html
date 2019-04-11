@@ -16,32 +16,15 @@
                 <li sec:authorize="isAnonymous()" class="nav-item active">
                     <a class="nav-link text-white" th:href="@{/register}">Register <span class="sr-only">(current)</span></a>
                 </li>
-                <!-- start of extra added 1-->
-                <li sec:authorize="isAnonymous()" class="nav-item active">
-                    <a class="nav-link text-white" th:href="@{/register}">News <span class="sr-only">(current)</span></a>
+                <li class="nav-item active">
+                    <a class="nav-link text-white" th:href="@{/articles/show}">Articles <span class="sr-only">(current)</span></a>
                 </li>
-                <!-- end of extra added 1-->
-                <!-- start of deleted 1-->
-                <!--
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Viruses
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/viruses/show}">Show</a>
-                        <th:block sec:authorize="hasRole('ROLE_ADMIN') and hasRole('USER')">
-                            <a class="dropdown-item" th:href="@{/viruses/add}">Add</a>
-                        </th:block>
-                    </div>
+                <li sec:authorize="isAuthenticated()" class="nav-item active">
+                    <a class="nav-link text-white" th:href="@{/articles/add}">Add Article <span class="sr-only">(current)</span></a>
                 </li>
-                -->
-                <!-- end of deleted 1-->
-                <th:block sec:authorize="hasRole('ROLE_ADMIN') and hasRole('USER')">
-                    <li sec:authorize="isAuthenticated()" class="nav-item active">
-                        <a class="nav-link text-white" th:href="@{/users}">Users<span class="sr-only">(current)</span></a>
-                    </li>
-                </th:block>
-
+                <li sec:authorize="isAuthenticated()" class="nav-item active">
+                    <a class="nav-link text-white" th:href="@{/users}">Users<span class="sr-only">(current)</span></a>
+                </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item active">
                     <a class="nav-link text-white" th:href="@{/logout}">Logout <span class="sr-only">(current)</span></a>
                 </li>
