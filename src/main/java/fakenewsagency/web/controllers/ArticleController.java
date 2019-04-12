@@ -32,24 +32,24 @@ public class ArticleController extends BaseController{
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Add Article")
-    public ModelAndView add(@ModelAttribute(name = "bindingModel") ArticleBindingModel bindingModel, ModelAndView modelAndView){
-        modelAndView.addObject("articleBindingModel", bindingModel);
+    public ModelAndView add(@ModelAttribute(name = "bindingModel") ArticleBindingModel articleBindingModel, ModelAndView modelAndView){
+        modelAndView.addObject("articleBindingModel", articleBindingModel);
         modelAndView.addObject("categories", ArticleCategory.values());
         return super.view("article/add-article", modelAndView);
     }
 
     @PostMapping("/add")
-    public ModelAndView addConfirm(@Valid @ModelAttribute(name = "bindingModel") ArticleBindingModel bindingModel,
+    public ModelAndView addConfirm(@Valid @ModelAttribute(name = "bindingModel") ArticleBindingModel articleBindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView) {
 
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject("articleBindingModel", bindingModel);
+        /*if (bindingResult.hasErrors()) {
+            modelAndView.addObject("articleBindingModel", articleBindingModel);
 
             return super.view("article/add-article", modelAndView);
-        }
+        }*/
 
 
-        ArticleServiceModel articleServiceModel = this.modelMapper.map(bindingModel, ArticleServiceModel.class);
+        ArticleServiceModel articleServiceModel = this.modelMapper.map(articleBindingModel, ArticleServiceModel.class);
         this.articleService.addArticle(articleServiceModel);
 
         if (articleServiceModel == null) {

@@ -3,6 +3,7 @@ package fakenewsagency.domain.models.binding;
 import fakenewsagency.domain.entites.ArticleCategory;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -45,7 +46,7 @@ public class ArticleBindingModel {
     public void setContent(String content) {
         this.content = content;
     }
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate getCreatedOn() {
         return createdOn;
     }
