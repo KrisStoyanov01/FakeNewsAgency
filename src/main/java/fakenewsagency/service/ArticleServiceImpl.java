@@ -22,10 +22,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleServiceModel addArticle(ArticleServiceModel articleServiceModel) {
         Article article = this.modelMapper.map(articleServiceModel, Article.class);
-        article.setViews(0);
+
         try{
             this.articleRepository.saveAndFlush(article);
-
             return this.modelMapper.map(article, ArticleServiceModel.class);
         }catch (Exception e){
             e.printStackTrace();

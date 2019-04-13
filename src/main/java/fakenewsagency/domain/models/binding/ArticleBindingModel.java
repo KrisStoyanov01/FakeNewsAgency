@@ -2,6 +2,7 @@ package fakenewsagency.domain.models.binding;
 
 import fakenewsagency.domain.entites.ArticleCategory;
 
+import fakenewsagency.domain.entites.User;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,9 +12,11 @@ import java.time.LocalDate;
 public class ArticleBindingModel {
     private String id;
     private String title;
+    private User author;
     private ArticleCategory articleCategory;
     private String content;
     private LocalDate createdOn;
+    private Integer views;
 
     public ArticleBindingModel() {
     }
@@ -26,6 +29,14 @@ public class ArticleBindingModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @NotNull(message = "Category cannot be null.")
@@ -53,5 +64,13 @@ public class ArticleBindingModel {
 
     public void setCreatedOn(LocalDate createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Integer getViews() {
+        return views;
+    }
+
+    public void setViews(Integer views) {
+        this.views = views;
     }
 }
