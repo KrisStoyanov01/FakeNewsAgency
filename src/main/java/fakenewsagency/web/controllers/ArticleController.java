@@ -5,6 +5,7 @@ import fakenewsagency.domain.entites.ArticleCategory;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
+import fakenewsagency.domain.models.view.ArticleListViewModel;
 import fakenewsagency.service.ArticleService;
 import fakenewsagency.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/articles")
@@ -67,4 +70,21 @@ public class ArticleController extends BaseController{
         //return super.redirect("/articles/show");
         return super.redirect("/home");
     }
+
+    @GetMapping("/show")
+    @PageTitle("Show All Articles")
+    public ModelAndView show(ModelAndView modelAndView,
+                             @ModelAttribute(name = "viewModel") ArticleListViewModel viewModel){
+        modelAndView.addObject("articles",
+                this.articleService.findAllArticles()
+                        .stream()
+                        .map(a -> this.modelMapper.map(a, ArticleListViewModel.class))
+                        .collect(Collectors.toList())
+        );
+
+
+        return super.view("article/all-articles", modelAndView);
+    }
+
+
 }

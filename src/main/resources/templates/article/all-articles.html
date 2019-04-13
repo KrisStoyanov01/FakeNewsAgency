@@ -1,10 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:include="~{fragments/head}"></th:block>
 </head>
-<body>
+<body onload="hideAll()">
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container mt-4">
+            <h1>Choose what </h1>
+            <label><input onclick="showAllArticles()" type="radio" name="radAnswer" value="articles">All Articles</label>
+            <label><input onclick="showArticlesInWorld()" type="radio" name="radAnswer" value="articles">World</label>
+            <label><input onclick="showArticlesInPolitics()" type="radio" name="radAnswer" value="articles">Politics</label>
+            <label><input onclick="showArticlesInBusiness()" type="radio" name="radAnswer" value="articles">Business</label>
+            <label><input onclick="showArticlesInSport()" type="radio" name="radAnswer" value="articles">Sport</label>
+            <label><input onclick="showArticlesInHealth()" type="radio" name="radAnswer" value="articles">Health</label>
 
+            <script>
+                function hideAll(){
+                    $('#visualizeText').show();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').hide();
+                }
+
+                function showAllArticles() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').show();
+                    $('#customTypesTable').hide();
+                }
+
+                function showArticlesInWorld() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').show();
+                }
+
+                function showArticlesInPolitics() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').show();
+                }
+
+                function showArticlesInBusiness() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').show();
+                }
+
+                function showArticlesInSport() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').show();
+                }
+
+                function showArticlesInHealth() {
+                    $('#visualizeText').hide();
+                    $('#allTypesTable').hide();
+                    $('#customTypesTable').show();
+                }
+                
+
+            </script>
+
+            <div th:id="visualizeText">
+                <hr/>
+                <h1 class="text-center" >Select what articles you want to visualize or just choose all!</h1>
+            </div>
+
+
+            <table class="table mt-3" th:id="allTypesTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Views</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="article, iter : ${articles}">
+                    <tr>
+                        <td scope="col" th:text="${iter.index + 1}"></td>
+                        <td scope="col" th:text="${article.title}"></td>
+                        <td scope="col" th:text="${article.views}"></td>
+                        <!-- todo add actor hyperlink-->
+                        <td scope="col" th:text="${article.author.username}"></td>
+                        <td scope="col" th:text="${article.createdOn}"></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+            <table class="table mt-3" th:id="customTypesTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Titles</th>
+                    <th scope="col">Views</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="article, iter : ${articles}">
+                    <tr>
+                        <td scope="col" th:text="${iter.index + 1}"></td>
+                        <td scope="col" th:text="${article.title}"></td>
+                        <td scope="col" th:text="${article.views}"></td>
+                        <!-- todo add actor hyperlink-->
+                        <td scope="col" th:text="${article.author.username}"></td>
+                        <td scope="col" th:text="${article.createdOn}"></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+
+            </form>
+        </div>
+    </main>
+</div>
 </body>
 </html>

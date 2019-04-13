@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -39,7 +40,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleServiceModel> findAllArticles() {
-        return null;
+        return this.articleRepository.findAll()
+                .stream()
+                .map(a -> this.modelMapper.map(a, ArticleServiceModel.class))
+                .collect(Collectors.toList());
     }
 
     @Override
