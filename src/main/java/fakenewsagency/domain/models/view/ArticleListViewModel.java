@@ -1,9 +1,12 @@
 package fakenewsagency.domain.models.view;
 
 import fakenewsagency.domain.entites.ArticleCategory;
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ArticleListViewModel {
     private String id;
@@ -12,8 +15,10 @@ public class ArticleListViewModel {
     private ArticleCategory articleCategory;
     private Integer views;
     private LocalDate createdOn;
+    private Set<Comment> comments;
 
     public ArticleListViewModel() {
+        this.comments = new HashSet<>();
     }
 
     public String getId() {
@@ -62,5 +67,13 @@ public class ArticleListViewModel {
 
     public void setCreatedOn(LocalDate createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

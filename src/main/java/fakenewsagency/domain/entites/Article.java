@@ -1,7 +1,8 @@
 package fakenewsagency.domain.entites;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "articles")
@@ -10,8 +11,10 @@ public class Article extends UserCreated {
     private String title;
     private ArticleCategory articleCategory;
     private Integer views;
+    private Set<Comment> comments;
 
     public Article() {
+        this.comments = new HashSet<>();
     }
 
     @Column(name = "title", unique = true, nullable = false)
@@ -40,5 +43,15 @@ public class Article extends UserCreated {
 
     public void setViews(Integer views) {
         this.views = views;
+    }
+
+    @Column(name = "comments")
+    @OneToMany(mappedBy = "articleOwner")
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

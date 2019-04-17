@@ -2,12 +2,15 @@ package fakenewsagency.domain.models.binding;
 
 import fakenewsagency.domain.entites.ArticleCategory;
 
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ArticleBindingModel {
     private String id;
@@ -17,8 +20,10 @@ public class ArticleBindingModel {
     private String content;
     private LocalDate createdOn;
     private Integer views;
+    private Set<Comment> comments;
 
     public ArticleBindingModel() {
+        this.comments = new HashSet<>();
     }
 
     @NotNull(message = "Title cannot be null.")
@@ -72,5 +77,13 @@ public class ArticleBindingModel {
 
     public void setViews(Integer views) {
         this.views = views;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

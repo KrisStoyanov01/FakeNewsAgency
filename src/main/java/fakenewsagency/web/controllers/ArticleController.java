@@ -2,6 +2,7 @@ package fakenewsagency.web.controllers;
 
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.ArticleCategory;
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,14 +63,14 @@ public class ArticleController extends BaseController{
         User author = this.modelMapper.map(this.userService.findUserByUserName(principal.getName()), User.class);
         articleBindingModel.setAuthor(author);
         articleBindingModel.setViews(0);
+        articleBindingModel.setComments(new HashSet<>());
         ArticleServiceModel articleServiceModel = this.modelMapper.map(articleBindingModel, ArticleServiceModel.class);
         this.articleService.addArticle(articleServiceModel);
         if (articleServiceModel == null) {
             throw new IllegalArgumentException("Article creation failed!");
         }
 
-        //return super.redirect("/articles/show");
-        return super.redirect("/home");
+        return super.redirect("/articles/show");
     }
 
     @GetMapping("/show")
