@@ -4,6 +4,7 @@ import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.ArticleCategory;
 import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
+import fakenewsagency.domain.models.binding.ArticleAddBindingModel;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
 import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
@@ -94,5 +95,24 @@ public class ArticleController extends BaseController{
         this.articleService.editArticle(articleDetailsViewModel.getId(), this.modelMapper.map(articleDetailsViewModel, ArticleServiceModel.class));
         modelAndView.addObject("article", articleDetailsViewModel);
         return super.view("article/details-article", modelAndView);
+    }
+
+    @GetMapping(value = "/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView edit(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+
+        ArticleBindingModel article = this.articleService.extractArticleByIdForEditOrDelete(id);
+        modelAndView.addObject("article", article);
+        modelAndView.addObject("categories", ArticleCategory.values());
+        modelAndView.addObject("articleId", id);
+        return super.view("article/edit-article", modelAndView);
+    }
+
+
+    @PostMapping("/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView editProductConfirm(@PathVariable String id, @ModelAttribute ArticleAddBindingModel model) {
+        this.articleService.editArticle(id, this.modelMapper.map(model, ArticleServiceModel.class));
+        return super.redirect("/products/details/" + id);
     }
 }

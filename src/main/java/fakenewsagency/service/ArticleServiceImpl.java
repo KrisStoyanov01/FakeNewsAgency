@@ -53,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleCategory(articleServiceModel.getArticleCategory());
         article.setViews(articleServiceModel.getViews());
         article.setComments(articleServiceModel.getComments());
-
+        //todo tail articleCategory, probably is null from the beginning
         return this.modelMapper.map(this.articleRepository.saveAndFlush(article), ArticleServiceModel.class);
     }
 
@@ -79,11 +79,32 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleBindingModel extractArticleByIdForEditOrDelete(String id) {
-        return null;
+        Article article = this.articleRepository.findById(id).orElse(null);
+
+        if (article == null) {
+            throw new IllegalArgumentException("Invalid id");
+        }
+
+        ArticleBindingModel articleBindingModel = this.modelMapper.map(article, ArticleBindingModel.class);
+        /*
+        List<String> capitalIds =
+                virus.getCapitals().stream().map(Capital::getId).collect(Collectors.toList());
+
+        virusBindingModel.setCapitals(capitalIds);
+        */
+        return articleBindingModel;
     }
 
     @Override
     public boolean deleteArticle(String id) {
-        return false;
+        try{
+            this.articleRepository.deleteById(id);
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+
+            return false;
+        }
     }
 }

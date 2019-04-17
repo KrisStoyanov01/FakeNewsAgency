@@ -1,17 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
-<th:block th:include="~{fragments/navbar}"></th:block>
-<div class="jumbotron col-sm-11 m-auto">
-    <h1>Edit Article</h1>
-    <hr/>
-    <form th:action="@{/articles/edit/{id}(id=${article.id})}" method="post">
-        <th:block th:include="~{fragments/virus-form}"></th:block>
+<body>
+<header>
+    <th:block th:include="~{fragments/navbar}"></th:block>
+</header>
+<main class="mt-3">
+    <h1 class="text-center text-dark">Edit Article</h1>
+    <hr class="hr-2 bg-dark w-25">
+    <form id="edit-article-form" class="form w-25 mx-auto" th:action="@{/articles/edit/{id}(id=${articleId})}"
+          method="post" enctype="multipart/form-data"><input type="hidden" name="_csrf"
+                                                             value="c686cd14-a7f9-4216-8009-c093b7d3df86">
+
+        <div class="form-group">
+            <label for="edit-article-title" class="font-weight-bold">Title</label>
+            <input type="text" class="form-control text-center" id="edit-article-title" name="title"
+                   th:value="${article.title}">
+        </div>
+
+        <div class="form-group">
+            <label for="edit-article-content" class="font-weight-bold">Content</label>
+            <textarea name="content" id="edit-article-content" cols="41" rows="5"
+                      th:text="${article.content}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="edit-article-category" class="font-weight-bold">Category</label>
+            <select id="edit-article-category" class="form-control">
+                <th:block th:each="articleCategory : ${categories}">
+                    <option th:value="${articleCategory}" th:text="${articleCategory}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <hr class="hr-2 bg-dark w-25">
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-success">Edit Article</button>
+        </div>
     </form>
-    <script>
-        $("#submitButton").text("Edit!");
-        $("#submitButton").addClass("btn btn-info");
-    </script>
-</div>
+</main>
+</body>
+</html>
