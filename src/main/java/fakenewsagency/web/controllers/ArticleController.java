@@ -6,6 +6,7 @@ import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
+import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
 import fakenewsagency.domain.models.view.ArticleListViewModel;
 import fakenewsagency.service.ArticleService;
 import fakenewsagency.service.UserService;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -88,5 +86,13 @@ public class ArticleController extends BaseController{
         return super.view("article/all-articles", modelAndView);
     }
 
-
+    @GetMapping("/details/{id}")
+    @PageTitle("Article Details")
+    public ModelAndView detailsProduct(@PathVariable String id, ModelAndView modelAndView) {
+        ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(id), ArticleDetailsViewModel.class);
+        articleDetailsViewModel.setViews(articleDetailsViewModel.getViews() + 1);
+        this.articleService.editArticle(articleDetailsViewModel.getId(), this.modelMapper.map(articleDetailsViewModel, ArticleServiceModel.class));
+        modelAndView.addObject("article", articleDetailsViewModel);
+        return super.view("article/details-article", modelAndView);
+    }
 }

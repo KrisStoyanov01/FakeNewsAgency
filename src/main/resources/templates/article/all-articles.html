@@ -91,8 +91,9 @@
                         <!-- todo add actor hyperlink-->
                         <td scope="col" th:text="${article.author.username}"></td>
                         <td scope="col" th:text="${article.createdOn}"></td>
-                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
-                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/articles/details/{id}(id=${article.id})}" th:text="Read"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/articles/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/articles/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -119,8 +120,8 @@
                         <!-- todo add actor hyperlink-->
                         <td scope="col" th:text="${article.author.username}"></td>
                         <td scope="col" th:text="${article.createdOn}"></td>
-                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
-                        <td scope="col"><a class="btn btn-info"  th:href="@{/article/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/articles/edit/{id}(id=${article.id})}" th:text="Edit"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/articles/delete/{id}(id=${article.id})}" th:text="Delete"></a></td>
                     </tr>
                 </th:block>
                 </tbody>

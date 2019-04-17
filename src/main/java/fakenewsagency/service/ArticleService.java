@@ -8,11 +8,11 @@ import java.util.List;
 public interface ArticleService {
     ArticleServiceModel addArticle(ArticleServiceModel articleServiceModel);
 
-    void editArticle(ArticleBindingModel articleBindingModel);
+    ArticleServiceModel editArticle(String id, ArticleServiceModel articleServiceModel);
 
     List<ArticleServiceModel> findAllArticles();
 
-    ArticleServiceModel findArticlesById(String id);
+    ArticleServiceModel findArticleById(String id);
 
     ArticleBindingModel extractArticleByIdForEditOrDelete(String id);
 
