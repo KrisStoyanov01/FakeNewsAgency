@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <label for="edit-article-category" class="font-weight-bold">Category</label>
-            <select id="edit-article-category" class="form-control">
+            <select id="edit-article-category" class="form-control" name="articleCategory">
                 <th:block th:each="articleCategory : ${categories}">
                     <option th:value="${articleCategory}" th:text="${articleCategory}"></option>
                 </th:block>

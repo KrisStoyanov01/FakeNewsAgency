@@ -46,14 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
                         .collect(Collectors.toList())
         );*/
 
-        article.setAuthor(articleServiceModel.getAuthor());
         article.setContent(articleServiceModel.getContent());
-        article.setCreatedOn(articleServiceModel.getCreatedOn());
         article.setTitle(articleServiceModel.getTitle());
         article.setArticleCategory(articleServiceModel.getArticleCategory());
-        article.setViews(articleServiceModel.getViews());
-        article.setComments(articleServiceModel.getComments());
-        //todo tail articleCategory, probably is null from the beginning
         return this.modelMapper.map(this.articleRepository.saveAndFlush(article), ArticleServiceModel.class);
     }
 

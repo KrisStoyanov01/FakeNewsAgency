@@ -89,7 +89,7 @@ public class ArticleController extends BaseController{
 
     @GetMapping("/details/{id}")
     @PageTitle("Article Details")
-    public ModelAndView detailsProduct(@PathVariable String id, ModelAndView modelAndView) {
+    public ModelAndView detailsProduct(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
         ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(id), ArticleDetailsViewModel.class);
         articleDetailsViewModel.setViews(articleDetailsViewModel.getViews() + 1);
         this.articleService.editArticle(articleDetailsViewModel.getId(), this.modelMapper.map(articleDetailsViewModel, ArticleServiceModel.class));
@@ -99,7 +99,7 @@ public class ArticleController extends BaseController{
 
     @GetMapping(value = "/edit/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView edit(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+    public ModelAndView editArticle(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
 
         ArticleBindingModel article = this.articleService.extractArticleByIdForEditOrDelete(id);
         modelAndView.addObject("article", article);
@@ -111,8 +111,33 @@ public class ArticleController extends BaseController{
 
     @PostMapping("/edit/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView editProductConfirm(@PathVariable String id, @ModelAttribute ArticleAddBindingModel model) {
-        this.articleService.editArticle(id, this.modelMapper.map(model, ArticleServiceModel.class));
-        return super.redirect("/products/details/" + id);
+    public ModelAndView editArticleConfirm(@PathVariable(name = "id") String id, @ModelAttribute ArticleAddBindingModel model) {
+        ArticleServiceModel readyModel = this.modelMapper.map(model, ArticleServiceModel.class);
+        this.articleService.editArticle(id, readyModel);
+        return super.redirect("/home");
+    }
+
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete Article")
+    public ModelAndView deleteArticle(@PathVariable String id, ModelAndView modelAndView) {
+        ArticleServiceModel articleServiceModel = this.articleService.findArticleById(id);
+        ArticleAddBindingModel model = this.modelMapper.map(articleServiceModel, ArticleAddBindingModel.class);
+
+        //model.setCategories(productServiceModel.getCategories().stream().map(c -> c.getName()).collect(Collectors.toList()));
+
+        modelAndView.addObject("article", model);
+        modelAndView.addObject("categories", ArticleCategory.values());
+        modelAndView.addObject("articleId", id);
+
+        return super.view("article/delete-article", modelAndView);
+    }
+
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView deleteArticleConfirm(@PathVariable String id) {
+        this.articleService.deleteArticle(id);
+
+        return super.redirect("/home");
     }
 }
