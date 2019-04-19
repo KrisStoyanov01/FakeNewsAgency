@@ -3,14 +3,17 @@ package fakenewsagency.web.controllers;
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.models.binding.UserRegisterBindingModel;
 import fakenewsagency.domain.models.service.UserServiceModel;
+import fakenewsagency.domain.models.view.UserDetailsViewModel;
 import fakenewsagency.domain.models.view.UserListViewModel;
 import fakenewsagency.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -78,14 +81,22 @@ public class UserController extends BaseController{
                 .map(u -> {
                     UserListViewModel user = this.modelMapper.map(u, UserListViewModel.class);
                     //user.setAuthorities(u.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet()));
-
+                    //todo delete upper when ready
                     return user;
                 })
                 .collect(Collectors.toList());
-        
+
         modelAndView.addObject("users", users);
 
         return super.view("user/all-users", modelAndView);
     }
 
+    @GetMapping("/users/details/{id}")
+    @PageTitle("Article Details")
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView detailsUser(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+        UserDetailsViewModel userDetailsViewModel = this.modelMapper.map(this.userService.findUserById(id), UserDetailsViewModel.class);
+        modelAndView.addObject("user", userDetailsViewModel);
+        return super.view("user/details-user", modelAndView);
+    }
 }

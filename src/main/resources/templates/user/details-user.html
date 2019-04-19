@@ -12,32 +12,12 @@
     <div class="jumbotron bg-light text-center">
         <div class="row">
             <div class="col col-md-12 mt-5">
-                <h1 th:text="'Title: ' + ${article.title}"></h1>
+                <h1 th:text="'Username: ' + ${user.username}"></h1>
             </div>
         </div>
         <div class="row">
             <div class="col col-md-12 mt-5">
-                <h1 th:text="'Article Category: ' + ${article.articleCategory}"></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12 mt-5">
-                <h1 th:text="'Views: ' + ${article.views}"></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12 mt-5">
-                <h1 th:text="'Author: ' + ${article.author.username}"></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12 mt-5">
-                <h1 th:text="'Content: ' + ${article.content}"></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-md-12 mt-5">
-                <h1 th:text="'Created On: ' + ${article.createdOn}"></h1>
+                <h1 th:text="'Email: ' + ${user.email}"></h1>
             </div>
         </div>
     </div>

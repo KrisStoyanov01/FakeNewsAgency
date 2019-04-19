@@ -12,4 +12,5 @@ public interface UserService extends UserDetailsService {
 
     UserServiceModel findUserByUserName(String username);
 
+    UserServiceModel findUserById(String id);
 }
