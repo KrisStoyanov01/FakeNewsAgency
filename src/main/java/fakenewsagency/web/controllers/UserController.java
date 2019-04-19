@@ -3,6 +3,7 @@ package fakenewsagency.web.controllers;
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.models.binding.UserRegisterBindingModel;
 import fakenewsagency.domain.models.service.UserServiceModel;
+import fakenewsagency.domain.models.view.UserListViewModel;
 import fakenewsagency.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController extends BaseController{
@@ -65,5 +69,23 @@ public class UserController extends BaseController{
         return modelAndView;
     }
 
+    @GetMapping("/users/all")
+    @PageTitle("All Users")
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView allUsers(ModelAndView modelAndView) {
+        List<UserListViewModel> users = this.userService.findAllUsers()
+                .stream()
+                .map(u -> {
+                    UserListViewModel user = this.modelMapper.map(u, UserListViewModel.class);
+                    //user.setAuthorities(u.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet()));
+
+                    return user;
+                })
+                .collect(Collectors.toList());
+        
+        modelAndView.addObject("users", users);
+
+        return super.view("user/all-users", modelAndView);
+    }
 
 }

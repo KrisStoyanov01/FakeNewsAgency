@@ -2,6 +2,8 @@ package fakenewsagency.domain.models.service;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.service.UserService;
+
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,10 +15,9 @@ public class UserServiceModel {
     private String email;
     private Set<Article> articles;
     private Set<Comment> comments;
+    private Set<RoleServiceModel> authorities;
 
     public UserServiceModel() {
-        this.articles = new HashSet<>();
-        this.comments = new HashSet<>();
     }
 
     public String getId() {
@@ -65,5 +66,13 @@ public class UserServiceModel {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<RoleServiceModel> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<RoleServiceModel> authorities) {
+        this.authorities = authorities;
     }
 }

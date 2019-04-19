@@ -1,18 +1,14 @@
-package fakenewsagency.domain.entites;
+package fakenewsagency.domain.models.view;
 
+import fakenewsagency.domain.entites.Article;
+import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.domain.entites.Role;
 
-
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity implements UserDetails {
-
+public class UserListViewModel {
+    private String id;
     private String username;
     private String password;
     private String email;
@@ -25,42 +21,44 @@ public class User extends BaseEntity implements UserDetails {
     private boolean isEnabled;
     private Set<Role> authorities;
 
-
-    public User(){
+    public UserListViewModel() {
         this.articles = new HashSet<>();
         this.comments = new HashSet<>();
         this.authorities = new HashSet<>();
     }
 
-    @Column(name = "username", nullable = false, unique = true, updatable = false)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    @Column(name = "password", nullable = false)
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Column(name = "email", nullable = false, unique = true)
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @Column(name = "articles")
-    @OneToMany(mappedBy = "author")
     public Set<Article> getArticles() {
         return articles;
     }
@@ -69,8 +67,6 @@ public class User extends BaseEntity implements UserDetails {
         this.articles = articles;
     }
 
-    @Column(name = "comments")
-    @OneToMany(mappedBy = "author")
     public Set<Comment> getComments() {
         return comments;
     }
@@ -79,48 +75,38 @@ public class User extends BaseEntity implements UserDetails {
         this.comments = comments;
     }
 
-    @Override
-    @Column(name = "is_account_non_expired")
     public boolean isAccountNonExpired() {
-        return true;
+        return isAccountNonExpired;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
     }
 
-    @Override
-    @Column(name = "is_account_non_locked")
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
     }
 
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
 
-    @Override
-    @Column(name = "is_credentials_non_expired")
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isCredentialsNonExpired;
     }
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         isCredentialsNonExpired = credentialsNonExpired;
     }
 
-    @Override
-    @Column(name = "is_enabled")
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
 
-    @Override
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     public Set<Role> getAuthorities() {
         return authorities;
     }

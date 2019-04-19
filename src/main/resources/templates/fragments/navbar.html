@@ -23,7 +23,7 @@
                     <a class="nav-link text-white" th:href="@{/articles/add}">Add Article <span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item active">
-                    <a class="nav-link text-white" th:href="@{/users}">Users<span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" th:href="@{/users/all}">Users<span class="sr-only">(current)</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item active">
                     <a class="nav-link text-white" th:href="@{/logout}">Logout <span class="sr-only">(current)</span></a>

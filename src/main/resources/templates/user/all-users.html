@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body onload="hideAll()">
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container mt-4">
+
+            <table class="table mt-3" th:id="usersTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Articles Published</th>
+                    <th scope="col">Comments Created</th>
+                    <th scope="col">Profile Link</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="user, iter : ${users}">
+                    <tr>
+                        <td scope="col" th:text="${iter.index + 1}"></td>
+                        <td scope="col" th:text="${user.username}"></td>
+                        <td scope="col" th:text="${user.email}"></td>
+                        <!-- todo add actor hyperlink-->
+                        <td scope="col" th:text="${user.articles.size()}"></td>
+                        <td scope="col" th:text="${user.comments.size()}"></td>
+
+                        <td scope="col" th:text="0"></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/users/details/{id}(id=${user.id})}" th:text="Profile"></a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>
