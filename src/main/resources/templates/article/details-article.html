@@ -40,6 +40,7 @@
                 <h1 th:text="'Created On: ' + ${article.createdOn}"></h1>
             </div>
         </div>
+        <a class="btn btn-info"  th:href="@{/comments/add/{id}(id=${article.id})}" th:text="Comment"></a>
     </div>
 </main>
 </body>

@@ -43,7 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
                 this.categoryService.findAllCategories()
                         .stream()
                         .filter(c -> productServiceModel.getCategories().contains(c.getId()))
-                        .collect(Collectors.toList())
+                       .collect(Collectors.toList())
         );*/
         article.setViews(articleServiceModel.getViews());
         article.setContent(articleServiceModel.getContent());

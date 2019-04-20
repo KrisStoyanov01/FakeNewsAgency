@@ -4,6 +4,7 @@ import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.CommentServiceModel;
+import fakenewsagency.domain.models.service.UserServiceModel;
 import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
 import fakenewsagency.service.ArticleService;
 import fakenewsagency.service.CommentService;
@@ -46,27 +47,30 @@ public class CommentController extends BaseController {
     }
 
     @PostMapping("/add/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView addConfirm(@PathVariable(name = "id") String articleId, @Valid @ModelAttribute(name = "bindingModel") CommentBindingModel commentBindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView, Principal principal) {
 
-        if (bindingResult.hasErrors()) {
+        /*if (bindingResult.hasErrors()) {
+            //todo add error handling
             modelAndView.addObject("commentBindingModel", commentBindingModel);
             ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(articleId), ArticleDetailsViewModel.class);
             modelAndView.addObject("article", articleDetailsViewModel);
             return super.view("comment/add-comment", modelAndView);
-        }
+        }*/
 
-        User author = this.modelMapper.map(this.userService.findUserByUserName(principal.getName()), User.class);
-        commentBindingModel.setAuthor(author);
+        UserServiceModel userServiceModel = this.userService.findUserByUserName(principal.getName());
+        commentBindingModel.setAuthor(this.modelMapper.map(userServiceModel, User.class));
         commentBindingModel.setScore(0);
         //commentBindingModel.setArticleOwner(this.articleService.f);
         CommentServiceModel commentServiceModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
+        //todo add article owner and fix date
         this.commentService.addComment(commentServiceModel);
         if (commentServiceModel == null) {
             throw new IllegalArgumentException("Comment creation failed!");
         }
 
-        //return super.redirect("/articles/show");
-        return super.redirect("/home");
+        return super.redirect("/articles/show");
+        //return super.redirect("/home");
     }
 }

@@ -27,8 +27,19 @@
         </div>
     </div>
 
-    <form id="add-comment-form" class="form w-25 mx-auto" th:action="@{/comments/add}" method="post" th:object="${commentBindingModel}">
-        <th:block th:include="~{fragments/comment-form}"></th:block>
+    <form id="add-comment-form" class="form w-25 mx-auto" th:action="@{/comments/add/{id}(id=${article.id})}" method="post" th:object="${commentBindingModel}">
+        <div class="form-group">
+            <label for="add-comment-content" class="font-weight-bold">Content</label>
+            <textarea name="content" id="add-comment-content" th:field="*{content}" cols="41" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="add-comment-date">Date Created</label>
+            <input type="date" id="add-comment-date" class="form-control" th:field="*{createdOn}" th:value="*{createdOn}">
+        </div>
+        <hr class="hr-2 bg-dark w-25">
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-success">Add Comment</button>
+        </div>
     </form>
 </main>
 </body>
