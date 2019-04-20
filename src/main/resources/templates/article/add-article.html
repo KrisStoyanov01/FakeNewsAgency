@@ -7,11 +7,11 @@
 <div class="jumbotron col-sm-11 m-auto">
     <h1>Write a fake article!</h1>
     <hr/>
-    <form id="add-product-form" class="form w-25 mx-auto" th:action="@{/articles/add}" method="post" th:object="${articleBindingModel}">
+    <form id="add-article-form" class="form w-25 mx-auto" th:action="@{/articles/add}" method="post" th:object="${articleBindingModel}">
         <th:block th:include="~{fragments/article-form}"></th:block>
     </form>
     <script>
-        $("#submitButton").text("Spread!");
+        $("#submitButton").text("Read");
         $("#submitButton").addClass("btn btn-success");
     </script>
 </div>

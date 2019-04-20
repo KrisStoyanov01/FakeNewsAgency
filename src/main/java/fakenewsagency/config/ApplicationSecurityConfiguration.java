@@ -20,7 +20,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .csrfTokenRepository(csrfTokenRepository())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/register", "/articles/show", "/articles/details/**").anonymous()
+                .antMatchers("/", "/login", "/register").anonymous()
                 .antMatchers("/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

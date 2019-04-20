@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleServiceModel editArticle(String id, ArticleServiceModel articleServiceModel) {
         Article article = this.articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException("Product with the given id was not found!"));
+                .orElseThrow(() -> new ArticleNotFoundException("Article with the given id was not found!"));
 
         /*
         articleServiceModel.setCategories(
@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .filter(c -> productServiceModel.getCategories().contains(c.getId()))
                         .collect(Collectors.toList())
         );*/
-
+        article.setViews(articleServiceModel.getViews());
         article.setContent(articleServiceModel.getContent());
         article.setTitle(articleServiceModel.getTitle());
         article.setArticleCategory(articleServiceModel.getArticleCategory());
@@ -69,7 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
 
                     return productServiceModel;
                 })
-                .orElseThrow(() -> new ArticleNotFoundException("Product with the given id was not found!"));
+                .orElseThrow(() -> new ArticleNotFoundException("Article with the given id was not found!"));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public boolean deleteArticle(String id) {
+    public boolean  deleteArticle(String id) {
         try{
             this.articleRepository.deleteById(id);
 

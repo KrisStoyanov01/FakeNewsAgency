@@ -73,6 +73,7 @@ public class ArticleController extends BaseController{
     }
 
     @GetMapping("/show")
+    @PreAuthorize("isAuthenticated()")
     @PageTitle("Show All Articles")
     public ModelAndView show(ModelAndView modelAndView,
                              @ModelAttribute(name = "viewModel") ArticleListViewModel viewModel){
@@ -89,6 +90,7 @@ public class ArticleController extends BaseController{
 
     @GetMapping("/details/{id}")
     @PageTitle("Article Details")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView detailsProduct(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
         ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(id), ArticleDetailsViewModel.class);
         articleDetailsViewModel.setViews(articleDetailsViewModel.getViews() + 1);
@@ -110,7 +112,6 @@ public class ArticleController extends BaseController{
 
 
     @PostMapping("/edit/{id}")
-    @PreAuthorize("isAuthenticated()")
     public ModelAndView editArticleConfirm(@PathVariable(name = "id") String id, @ModelAttribute ArticleAddBindingModel model) {
         ArticleServiceModel readyModel = this.modelMapper.map(model, ArticleServiceModel.class);
         this.articleService.editArticle(id, readyModel);

@@ -19,7 +19,6 @@ public class ArticleServiceModel {
     private Set<Comment> comments;
 
     public ArticleServiceModel() {
-        this.comments = new HashSet<>();
     }
 
     public String getId() {

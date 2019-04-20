@@ -8,7 +8,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ArticleAddBindingModel {private String id;
+public class ArticleAddBindingModel {
+    private String id;
     private String title;
     private ArticleCategory articleCategory;
     private Integer views;
