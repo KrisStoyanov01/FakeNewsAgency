@@ -4,6 +4,7 @@ import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
+
 import fakenewsagency.domain.models.service.CommentServiceModel;
 import fakenewsagency.domain.models.service.UserServiceModel;
 import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
@@ -52,26 +53,65 @@ public class CommentController extends BaseController {
     public ModelAndView addConfirm(@PathVariable(name = "id") String articleId, @Valid @ModelAttribute(name = "bindingModel") CommentBindingModel commentBindingModel,
                                    BindingResult bindingResult, ModelAndView modelAndView, Principal principal) {
 
-        /*if (bindingResult.hasErrors()) {
-            //todo add error handling
+        if (bindingResult.hasErrors()) {
             modelAndView.addObject("commentBindingModel", commentBindingModel);
             ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(articleId), ArticleDetailsViewModel.class);
             modelAndView.addObject("article", articleDetailsViewModel);
             return super.view("comment/add-comment", modelAndView);
-        }*/
+        }
 
         UserServiceModel userServiceModel = this.userService.findUserByUserName(principal.getName());
         commentBindingModel.setAuthor(this.modelMapper.map(userServiceModel, User.class));
         commentBindingModel.setScore(0);
         commentBindingModel.setArticleOwner(this.modelMapper.map(this.articleService.findArticleById(articleId), Article.class));
         CommentServiceModel commentServiceModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
-        //todo add article owner and fix date
         this.commentService.addComment(commentServiceModel);
         if (commentServiceModel == null) {
             throw new IllegalArgumentException("Comment creation failed!");
         }
 
-        return super.redirect("/articles/show");
-        //return super.redirect("/home");
+        return super.redirect("/articles/details/" + articleId);
+    }
+
+    @GetMapping(value = "/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Edit Comment")
+    public ModelAndView editComment(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
+
+        CommentBindingModel commentBindingModel = this.commentService.extractCommentByIdForEditOrDelete(id);
+        modelAndView.addObject("comment", commentBindingModel);
+        modelAndView.addObject("commentId", id);
+        return super.view("comment/edit-comment", modelAndView);
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editCommentConfirm(@PathVariable(name = "id") String id, @ModelAttribute CommentBindingModel commentBindingModel) {
+        CommentServiceModel readyModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
+        this.commentService.editComment(id, readyModel);
+        return super.redirect("/home");
+    }
+
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete Article")
+    public ModelAndView deleteComment(@PathVariable String id, ModelAndView modelAndView) {
+        CommentServiceModel commentServiceModel= this.commentService.findCommentById(id);
+        CommentBindingModel commentBindingModel = this.modelMapper.map(commentServiceModel, CommentBindingModel.class);
+
+        //model.setCategories(productServiceModel.getCategories().stream().map(c -> c.getName()).collect(Collectors.toList()));
+
+        modelAndView.addObject("comment", commentBindingModel);
+        modelAndView.addObject("commentId", id);
+
+        return super.view("comment/delete-comment", modelAndView);
+    }
+
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView deleteCommentConfirm(@PathVariable String id) {
+        this.commentService.deleteComment(id);
+
+        return super.redirect("/home");
     }
 }

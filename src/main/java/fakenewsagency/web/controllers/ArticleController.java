@@ -3,11 +3,10 @@ package fakenewsagency.web.controllers;
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.ArticleCategory;
 import fakenewsagency.domain.entites.User;
-import fakenewsagency.domain.models.binding.ArticleAddBindingModel;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
-import fakenewsagency.domain.models.service.CommentServiceModel;
+
 import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
 import fakenewsagency.domain.models.view.ArticleListViewModel;
 import fakenewsagency.service.ArticleService;
@@ -113,11 +112,12 @@ public class ArticleController extends BaseController{
     }
 
     @GetMapping(value = "/edit/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Edit Article")
     public ModelAndView editArticle(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
 
-        ArticleBindingModel article = this.articleService.extractArticleByIdForEditOrDelete(id);
-        modelAndView.addObject("article", article);
+        ArticleBindingModel articleBindingModel = this.articleService.extractArticleByIdForEditOrDelete(id);
+        modelAndView.addObject("article", articleBindingModel);
         modelAndView.addObject("categories", ArticleCategory.values());
         modelAndView.addObject("articleId", id);
         return super.view("article/edit-article", modelAndView);
@@ -125,8 +125,8 @@ public class ArticleController extends BaseController{
 
 
     @PostMapping("/edit/{id}")
-    public ModelAndView editArticleConfirm(@PathVariable(name = "id") String id, @ModelAttribute ArticleAddBindingModel model) {
-        ArticleServiceModel readyModel = this.modelMapper.map(model, ArticleServiceModel.class);
+    public ModelAndView editArticleConfirm(@PathVariable(name = "id") String id, @ModelAttribute ArticleBindingModel articleBindingModel) {
+        ArticleServiceModel readyModel = this.modelMapper.map(articleBindingModel, ArticleServiceModel.class);
         this.articleService.editArticle(id, readyModel);
         return super.redirect("/home");
     }
@@ -136,11 +136,11 @@ public class ArticleController extends BaseController{
     @PageTitle("Delete Article")
     public ModelAndView deleteArticle(@PathVariable String id, ModelAndView modelAndView) {
         ArticleServiceModel articleServiceModel = this.articleService.findArticleById(id);
-        ArticleAddBindingModel model = this.modelMapper.map(articleServiceModel, ArticleAddBindingModel.class);
+        ArticleBindingModel articleBindingModel = this.modelMapper.map(articleServiceModel, ArticleBindingModel.class);
 
         //model.setCategories(productServiceModel.getCategories().stream().map(c -> c.getName()).collect(Collectors.toList()));
 
-        modelAndView.addObject("article", model);
+        modelAndView.addObject("article", articleBindingModel);
         modelAndView.addObject("categories", ArticleCategory.values());
         modelAndView.addObject("articleId", id);
 
