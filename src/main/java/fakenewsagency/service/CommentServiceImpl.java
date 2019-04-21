@@ -1,13 +1,16 @@
 package fakenewsagency.service;
 
 import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.CommentServiceModel;
+import fakenewsagency.error.CommentNotFoundException;
 import fakenewsagency.repository.CommentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -35,26 +38,59 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentServiceModel editComment(String id, CommentServiceModel commentServiceModel) {
-        return null;
+        Comment comment = this.commentRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFoundException("Comment with the given id was not found!"));
+        /*
+        article.setViews(articleServiceModel.getViews());
+        article.setContent(articleServiceModel.getContent());
+        article.setTitle(articleServiceModel.getTitle());
+        article.setArticleCategory(articleServiceModel.getArticleCategory());*/
+        //todo up
+        return this.modelMapper.map(this.commentRepository.saveAndFlush(comment), CommentServiceModel.class);
     }
 
     @Override
     public List<CommentServiceModel> findAllComments() {
-        return null;
+        return this.commentRepository.findAll()
+                .stream()
+                .map(a -> this.modelMapper.map(a, CommentServiceModel.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public CommentServiceModel findCommentById(String id) {
-        return null;
+        return this.commentRepository.findById(id)
+                .map(p -> {
+                    CommentServiceModel commentServiceModel = this.modelMapper.map(p, CommentServiceModel.class);
+                    this.commentRepository.findById(commentServiceModel.getId());
+
+                    return commentServiceModel;
+                })
+                .orElseThrow(() -> new CommentNotFoundException("Comment with the given id was not found!"));
     }
 
     @Override
-    public CommentServiceModel extractCommentByIdForEditOrDelete(String id) {
-        return null;
+    public CommentBindingModel extractCommentByIdForEditOrDelete(String id) {
+        Comment comment = this.commentRepository.findById(id).orElse(null);
+
+        if (comment == null) {
+            throw new IllegalArgumentException("Invalid id");
+        }
+
+        CommentBindingModel commentBindingModel = this.modelMapper.map(comment, CommentBindingModel.class);
+        return commentBindingModel;
     }
 
     @Override
     public boolean deleteComment(String id) {
-        return false;
+        try{
+            this.commentRepository.deleteById(id);
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+
+            return false;
+        }
     }
 }

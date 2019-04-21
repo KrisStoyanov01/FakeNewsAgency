@@ -64,10 +64,10 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleServiceModel findArticleById(String id) {
         return this.articleRepository.findById(id)
                 .map(p -> {
-                    ArticleServiceModel productServiceModel = this.modelMapper.map(p, ArticleServiceModel.class);
-                    this.articleRepository.findById(productServiceModel.getId());
+                    ArticleServiceModel articleServiceModel = this.modelMapper.map(p, ArticleServiceModel.class);
+                    this.articleRepository.findById(articleServiceModel.getId());
 
-                    return productServiceModel;
+                    return articleServiceModel;
                 })
                 .orElseThrow(() -> new ArticleNotFoundException("Article with the given id was not found!"));
     }

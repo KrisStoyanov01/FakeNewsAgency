@@ -1,5 +1,6 @@
 package fakenewsagency.service;
 
+import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.CommentServiceModel;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CommentService {
 
     CommentServiceModel findCommentById(String id);
 
-    CommentServiceModel extractCommentByIdForEditOrDelete(String id);
+    CommentBindingModel extractCommentByIdForEditOrDelete(String id);
 
     boolean deleteComment(String id);
 }
