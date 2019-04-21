@@ -40,7 +40,40 @@
                 <h1 th:text="'Created On: ' + ${article.createdOn}"></h1>
             </div>
         </div>
+
+
+        <table class="table mt-3" th:id="commentsTable">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Content</th>
+                <th scope="col">Score</th>
+                <th scope="col">Author</th>
+                <th scope="col">Created on</th>
+                <th scope="col">Actions</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="comment, iter : ${comments}">
+                <tr>
+                    <td scope="col" th:text="${iter.index + 1}"></td>
+                    <td scope="col" th:text="${comment.content}"></td>
+                    <td scope="col" th:text="${comment.score}"></td>
+                    <!-- todo add actor hyperlink-->
+                    <td scope="col" th:text="${comment.author.username}"></td>
+                    <td scope="col" th:text="${comment.createdOn}"></td>
+                    <td scope="col"><a class="btn btn-info"  th:href="@{/comments/edit/{id}(id=${comment.id})}" th:text="Edit"></a></td>
+                    <td scope="col"><a class="btn btn-info"  th:href="@{/comments/delete/{id}(id=${comment.id})}" th:text="Delete"></a></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+
+
         <a class="btn btn-info"  th:href="@{/comments/add/{id}(id=${article.id})}" th:text="Comment"></a>
+        <a class="btn btn-info"  th:href="@{/articles/show}" th:text="Back"></a>
     </div>
 </main>
 </body>

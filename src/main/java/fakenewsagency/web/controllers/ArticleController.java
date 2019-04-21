@@ -2,14 +2,16 @@ package fakenewsagency.web.controllers;
 
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.ArticleCategory;
-import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.ArticleAddBindingModel;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
+import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
+import fakenewsagency.domain.models.service.CommentServiceModel;
 import fakenewsagency.domain.models.view.ArticleDetailsViewModel;
 import fakenewsagency.domain.models.view.ArticleListViewModel;
 import fakenewsagency.service.ArticleService;
+import fakenewsagency.service.CommentService;
 import fakenewsagency.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,14 @@ public class ArticleController extends BaseController{
     private final ModelMapper modelMapper;
     private final ArticleService articleService;
     private final UserService userService;
+    private final CommentService commentService;
 
     @Autowired
-    public ArticleController(ModelMapper modelMapper, ArticleService articleService, UserService userService) {
+    public ArticleController(ModelMapper modelMapper, ArticleService articleService, UserService userService, CommentService commentService) {
         this.modelMapper = modelMapper;
         this.articleService = articleService;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/add")
@@ -84,7 +88,6 @@ public class ArticleController extends BaseController{
                         .collect(Collectors.toList())
         );
 
-
         return super.view("article/all-articles", modelAndView);
     }
 
@@ -95,7 +98,17 @@ public class ArticleController extends BaseController{
         ArticleDetailsViewModel articleDetailsViewModel = this.modelMapper.map(this.articleService.findArticleById(id), ArticleDetailsViewModel.class);
         articleDetailsViewModel.setViews(articleDetailsViewModel.getViews() + 1);
         this.articleService.editArticle(articleDetailsViewModel.getId(), this.modelMapper.map(articleDetailsViewModel, ArticleServiceModel.class));
+
+        List<CommentBindingModel> comments = this.commentService
+                .findAllCommentsByArticleId(id)
+                .stream()
+                .map(c -> this.modelMapper.map(c, CommentBindingModel.class))
+                .collect(Collectors.toList());
+
+
         modelAndView.addObject("article", articleDetailsViewModel);
+        modelAndView.addObject("comments", comments);
+
         return super.view("article/details-article", modelAndView);
     }
 

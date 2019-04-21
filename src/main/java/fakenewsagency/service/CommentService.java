@@ -10,7 +10,7 @@ public interface CommentService {
 
     CommentServiceModel editComment(String id, CommentServiceModel commentServiceModel);
 
-    List<CommentServiceModel> findAllComments();
+    List<CommentServiceModel> findAllCommentsByArticleId(String articleId);
 
     CommentServiceModel findCommentById(String id);
 
