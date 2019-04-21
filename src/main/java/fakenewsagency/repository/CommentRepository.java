@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, String> {
-    public List<Comment> findCommentsByArticleOwner(Optional articleOwner);
+    List<Comment> findCommentsByArticleOwner(Optional articleOwner);
 }

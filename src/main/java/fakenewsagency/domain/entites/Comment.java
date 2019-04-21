@@ -11,7 +11,7 @@ public class Comment extends UserCreated{
     public Comment() {
     }
 
-    @Column(name = "score")
+    @Column(name = "score", nullable = false)
     public Integer getScore() {
         return score;
     }
