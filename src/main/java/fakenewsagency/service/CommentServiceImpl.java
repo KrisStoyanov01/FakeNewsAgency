@@ -45,12 +45,8 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceModel editComment(String id, CommentServiceModel commentServiceModel) {
         Comment comment = this.commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment with the given id was not found!"));
-        /*
-        article.setViews(articleServiceModel.getViews());
-        article.setContent(articleServiceModel.getContent());
-        article.setTitle(articleServiceModel.getTitle());
-        article.setArticleCategory(articleServiceModel.getArticleCategory());*/
-        //todo up
+        comment.setContent(commentServiceModel.getContent());
+        comment.setCreatedOn(commentServiceModel.getCreatedOn());
         return this.modelMapper.map(this.commentRepository.saveAndFlush(comment), CommentServiceModel.class);
     }
 

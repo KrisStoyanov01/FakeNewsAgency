@@ -2,6 +2,7 @@ package fakenewsagency.web.controllers;
 
 import fakenewsagency.common.annotations.PageTitle;
 import fakenewsagency.domain.entites.Article;
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
 
@@ -87,9 +88,10 @@ public class CommentController extends BaseController {
 
     @PostMapping("/edit/{id}")
     public ModelAndView editCommentConfirm(@PathVariable(name = "id") String id, @ModelAttribute CommentBindingModel commentBindingModel) {
-        CommentServiceModel readyModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
-        this.commentService.editComment(id, readyModel);
-        return super.redirect("/home");
+        this.commentService.editComment(id, this.modelMapper.map(commentBindingModel, CommentServiceModel.class));
+        String articleId = this.commentService.findCommentById(id).getArticleOwner().getId();
+
+        return super.redirect("/articles/details/" + articleId);
     }
 
     @GetMapping("/delete/{id}")
@@ -110,8 +112,9 @@ public class CommentController extends BaseController {
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView deleteCommentConfirm(@PathVariable String id) {
+        CommentServiceModel readyModel = this.commentService.findCommentById(id);
+        String articleId = readyModel.getArticleOwner().getId();
         this.commentService.deleteComment(id);
-
-        return super.redirect("/home");
+        return super.redirect("/articles/details/" + articleId);
     }
 }
