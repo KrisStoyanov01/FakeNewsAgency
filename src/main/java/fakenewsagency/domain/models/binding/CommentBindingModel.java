@@ -2,7 +2,10 @@ package fakenewsagency.domain.models.binding;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.User;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class CommentBindingModel {
@@ -48,6 +51,8 @@ public class CommentBindingModel {
         this.author = author;
     }
 
+    @NotNull(message = "Content cannot be null.")
+    @Length(min = 5, max = 100, message = "Content should be between 5 and 100 symbols.")
     public String getContent() {
         return content;
     }
@@ -56,6 +61,7 @@ public class CommentBindingModel {
         this.content = content;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate getCreatedOn() {
         return createdOn;
     }

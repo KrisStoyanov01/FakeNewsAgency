@@ -1,6 +1,7 @@
 package fakenewsagency.web.controllers;
 
 import fakenewsagency.common.annotations.PageTitle;
+import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.CommentServiceModel;
@@ -62,7 +63,7 @@ public class CommentController extends BaseController {
         UserServiceModel userServiceModel = this.userService.findUserByUserName(principal.getName());
         commentBindingModel.setAuthor(this.modelMapper.map(userServiceModel, User.class));
         commentBindingModel.setScore(0);
-        //commentBindingModel.setArticleOwner(this.articleService.f);
+        commentBindingModel.setArticleOwner(this.modelMapper.map(this.articleService.findArticleById(articleId), Article.class));
         CommentServiceModel commentServiceModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
         //todo add article owner and fix date
         this.commentService.addComment(commentServiceModel);

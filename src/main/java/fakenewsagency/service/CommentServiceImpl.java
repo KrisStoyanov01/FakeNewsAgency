@@ -1,5 +1,6 @@
 package fakenewsagency.service;
 
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.models.service.CommentServiceModel;
 import fakenewsagency.repository.CommentRepository;
 import org.modelmapper.ModelMapper;
@@ -22,7 +23,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentServiceModel addComment(CommentServiceModel commentServiceModel) {
-        return null;
+        Comment comment = this.modelMapper.map(commentServiceModel, Comment.class);
+        try{
+            this.commentRepository.saveAndFlush(comment);
+            return this.modelMapper.map(comment, CommentServiceModel.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
