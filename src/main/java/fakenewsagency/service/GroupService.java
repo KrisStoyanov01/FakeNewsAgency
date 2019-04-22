@@ -12,6 +12,4 @@ public interface GroupService {
     GroupServiceModel findGroupById(String id);
 
     List<GroupServiceModel> findAllGroups();
-
-
 }

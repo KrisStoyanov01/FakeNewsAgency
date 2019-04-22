@@ -12,6 +12,8 @@ public interface ArticleService {
 
     List<ArticleServiceModel> findAllArticles();
 
+    List<ArticleServiceModel> findAllArticlesByUserId(String userId);
+
     ArticleServiceModel findArticleById(String id);
 
     ArticleBindingModel extractArticleByIdForEditOrDelete(String id);

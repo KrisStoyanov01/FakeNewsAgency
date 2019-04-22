@@ -2,11 +2,13 @@ package fakenewsagency.service;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.CommentBindingModel;
 import fakenewsagency.domain.models.service.CommentServiceModel;
 import fakenewsagency.error.CommentNotFoundException;
 import fakenewsagency.repository.ArticleRepository;
 import fakenewsagency.repository.CommentRepository;
+import fakenewsagency.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,14 @@ public class CommentServiceImpl implements CommentService {
     private final ModelMapper modelMapper;
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, ArticleRepository articleRepository) {
+    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, ArticleRepository articleRepository, UserRepository userRepository) {
         this.modelMapper = modelMapper;
         this.commentRepository = commentRepository;
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -54,6 +58,15 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentServiceModel> findAllCommentsByArticleId(String articleId) {
         Optional<Article> article = this.articleRepository.findById(articleId);
         return this.commentRepository.findCommentsByArticleOwner(article)
+                .stream()
+                .map(c -> this.modelMapper.map(c, CommentServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CommentServiceModel> findAllCommentsByUserId(String userId) {
+        Optional<User> user = this.userRepository.findById(userId);
+        return this.commentRepository.findCommentsByAuthor(user)
                 .stream()
                 .map(c -> this.modelMapper.map(c, CommentServiceModel.class))
                 .collect(Collectors.toList());

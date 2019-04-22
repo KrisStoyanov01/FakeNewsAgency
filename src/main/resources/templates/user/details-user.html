@@ -4,7 +4,7 @@
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
-<body>
+<body onload="hideAll()">
 <header>
     <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
@@ -20,7 +20,85 @@
                 <h1 th:text="'Email: ' + ${user.email}"></h1>
             </div>
         </div>
+        <div class="row">
+            <div class="col col-md-12 mt-5">
+                <h1 th:text="'Group: ' + ${user.group.name}"></h1>
+            </div>
+        </div>
     </div>
+
+    <label><input onclick="showArticles()" type="radio" name="articles" value="articles">Articles</label>
+    <label><input  onclick="showComments()" type="radio" name="comments" value="comments">Comments</label>
+
+    <script>
+        function hideAll(){
+            $('#visualizeText').show();
+            $('#articlesTable').hide();
+            $('#commentsTable').hide();
+        }
+
+        function showArticles() {
+            $('#visualizeText').hide();
+            $('#articlesTable').show();
+            $('#commentsTable').hide();
+        }
+        function showComments() {
+            $('#visualizeText').hide();
+            $('#articlesTable').hide();
+            $('#commentsTable').show();
+        }
+    </script>
+
+    <div th:id="visualizeText">
+        <hr/>
+        <h1 class="text-center" >Select what data you want to visualize!</h1>
+    </div>
+
+
+    <table class="table mt-3" th:id="articlesTable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Category</th>
+            <th scope="col">Views</th>
+            <th scope="col">Actions</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="article, iter : ${articles}">
+            <tr>
+                <td scope="col" th:text="${iter.index + 1}"></td>
+                <td scope="col" th:text="${article.title}"></td>
+                <td scope="col" th:text="${article.articleCategory}"></td>
+                <td scope="col" th:text="${article.views}"></td>
+                <td scope="col"><a class="btn btn-info"  th:href="@{/articles/details/{id}(id=${article.id})}" th:text="View"></a></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+
+    <table class="table mt-3" th:id="commentsTable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Content</th>
+            <th scope="col">View Article</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="comment, iter : ${comments}">
+            <tr>
+                <td scope="col" th:text="${iter.index + 1}"></td>
+                <td scope="col" th:text="${comment.content}"></td>
+                <td scope="col"><a class="btn btn-info"  th:href="@{/articles/details/{id}(id=${comment.articleOwner.id})}" th:text="Article"></a></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
 </main>
 </body>
 </html>

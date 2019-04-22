@@ -1,14 +1,20 @@
 package fakenewsagency.web.controllers;
 
 import fakenewsagency.common.annotations.PageTitle;
+import fakenewsagency.domain.entites.Article;
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.models.binding.UserRegisterBindingModel;
 import fakenewsagency.domain.models.service.UserServiceModel;
+import fakenewsagency.domain.models.view.ArticleListViewModel;
+import fakenewsagency.domain.models.view.CommentListViewModel;
 import fakenewsagency.domain.models.view.UserDetailsViewModel;
 import fakenewsagency.domain.models.view.UserListViewModel;
+import fakenewsagency.service.ArticleService;
+import fakenewsagency.service.CommentService;
+import fakenewsagency.service.GroupService;
 import fakenewsagency.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +33,15 @@ public class UserController extends BaseController{
 
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final CommentService commentService;
+    private final ArticleService articleService;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, CommentService commentService, ArticleService articleService) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.commentService = commentService;
+        this.articleService = articleService;
     }
 
     @GetMapping("/register")
@@ -80,8 +89,6 @@ public class UserController extends BaseController{
                 .stream()
                 .map(u -> {
                     UserListViewModel user = this.modelMapper.map(u, UserListViewModel.class);
-                    //user.setAuthorities(u.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet()));
-                    //todo delete upper when ready
                     return user;
                 })
                 .collect(Collectors.toList());
@@ -97,6 +104,10 @@ public class UserController extends BaseController{
     public ModelAndView detailsUser(@PathVariable(name = "id") String id, ModelAndView modelAndView) {
         UserDetailsViewModel userDetailsViewModel = this.modelMapper.map(this.userService.findUserById(id), UserDetailsViewModel.class);
         modelAndView.addObject("user", userDetailsViewModel);
+        List<ArticleListViewModel> articles = this.articleService.findAllArticlesByUserId(id).stream().map(a -> this.modelMapper.map(a, ArticleListViewModel.class)).collect(Collectors.toList());
+        List<CommentListViewModel> comments = this.commentService.findAllCommentsByUserId(id).stream().map(c -> this.modelMapper.map(c, CommentListViewModel.class)).collect(Collectors.toList());
+        modelAndView.addObject("articles", articles);
+        modelAndView.addObject("comments", comments);
         return super.view("user/details-user", modelAndView);
     }
 }

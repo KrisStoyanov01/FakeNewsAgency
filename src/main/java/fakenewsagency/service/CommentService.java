@@ -12,6 +12,8 @@ public interface CommentService {
 
     List<CommentServiceModel> findAllCommentsByArticleId(String articleId);
 
+    List<CommentServiceModel> findAllCommentsByUserId(String userId);
+
     CommentServiceModel findCommentById(String id);
 
     CommentBindingModel extractCommentByIdForEditOrDelete(String id);

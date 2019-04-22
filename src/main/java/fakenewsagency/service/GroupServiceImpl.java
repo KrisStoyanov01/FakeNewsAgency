@@ -1,14 +1,17 @@
 package fakenewsagency.service;
 
 import fakenewsagency.domain.entites.Group;
+import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.service.GroupServiceModel;
 import fakenewsagency.error.GroupNotFoundException;
 import fakenewsagency.repository.GroupRepository;
+import fakenewsagency.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,4 +56,5 @@ public class GroupServiceImpl implements GroupService {
                 .map(g -> this.modelMapper.map(g, GroupServiceModel.class))
                 .collect(Collectors.toList());
     }
+
 }

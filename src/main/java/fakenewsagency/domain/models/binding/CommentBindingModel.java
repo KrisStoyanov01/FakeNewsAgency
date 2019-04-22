@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 public class CommentBindingModel {
     private String id;
-    private Integer score;
     private Article articleOwner;
     private User author;
     private String content;
@@ -25,14 +24,6 @@ public class CommentBindingModel {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
     }
 
     public Article getArticleOwner() {

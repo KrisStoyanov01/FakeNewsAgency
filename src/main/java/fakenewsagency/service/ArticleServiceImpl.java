@@ -1,24 +1,29 @@
 package fakenewsagency.service;
 
 import fakenewsagency.domain.entites.Article;
+import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.ArticleBindingModel;
 import fakenewsagency.domain.models.service.ArticleServiceModel;
 import fakenewsagency.error.ArticleNotFoundException;
 import fakenewsagency.repository.ArticleRepository;
+import fakenewsagency.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
     private final ModelMapper modelMapper;
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleServiceImpl(ModelMapper modelMapper, ArticleRepository articleRepository) {
+    public ArticleServiceImpl(ModelMapper modelMapper, ArticleRepository articleRepository, UserRepository userRepository) {
         this.modelMapper = modelMapper;
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -38,13 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = this.articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with the given id was not found!"));
 
-        /*
-        articleServiceModel.setCategories(
-                this.categoryService.findAllCategories()
-                        .stream()
-                        .filter(c -> productServiceModel.getCategories().contains(c.getId()))
-                       .collect(Collectors.toList())
-        );*/
         article.setViews(articleServiceModel.getViews());
         article.setContent(articleServiceModel.getContent());
         article.setTitle(articleServiceModel.getTitle());
@@ -55,6 +53,15 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleServiceModel> findAllArticles() {
         return this.articleRepository.findAll()
+                .stream()
+                .map(a -> this.modelMapper.map(a, ArticleServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArticleServiceModel> findAllArticlesByUserId(String userId) {
+        Optional<User> user = this.userRepository.findById(userId);
+        return this.articleRepository.findArticlesByAuthor(user)
                 .stream()
                 .map(a -> this.modelMapper.map(a, ArticleServiceModel.class))
                 .collect(Collectors.toList());
@@ -81,12 +88,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         ArticleBindingModel articleBindingModel = this.modelMapper.map(article, ArticleBindingModel.class);
-        /*
-        List<String> capitalIds =
-                virus.getCapitals().stream().map(Capital::getId).collect(Collectors.toList());
-
-        virusBindingModel.setCapitals(capitalIds);
-        */
         return articleBindingModel;
     }
 

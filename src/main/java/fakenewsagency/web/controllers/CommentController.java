@@ -63,7 +63,6 @@ public class CommentController extends BaseController {
 
         UserServiceModel userServiceModel = this.userService.findUserByUserName(principal.getName());
         commentBindingModel.setAuthor(this.modelMapper.map(userServiceModel, User.class));
-        commentBindingModel.setScore(0);
         commentBindingModel.setArticleOwner(this.modelMapper.map(this.articleService.findArticleById(articleId), Article.class));
         CommentServiceModel commentServiceModel = this.modelMapper.map(commentBindingModel, CommentServiceModel.class);
         this.commentService.addComment(commentServiceModel);
@@ -100,8 +99,6 @@ public class CommentController extends BaseController {
     public ModelAndView deleteComment(@PathVariable String id, ModelAndView modelAndView) {
         CommentServiceModel commentServiceModel= this.commentService.findCommentById(id);
         CommentBindingModel commentBindingModel = this.modelMapper.map(commentServiceModel, CommentBindingModel.class);
-
-        //model.setCategories(productServiceModel.getCategories().stream().map(c -> c.getName()).collect(Collectors.toList()));
 
         modelAndView.addObject("comment", commentBindingModel);
         modelAndView.addObject("commentId", id);

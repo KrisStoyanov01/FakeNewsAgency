@@ -1,18 +1,22 @@
-package fakenewsagency.domain.models.service;
+package fakenewsagency.domain.models.view;
 
 import fakenewsagency.domain.entites.Article;
+import fakenewsagency.domain.entites.ArticleCategory;
+import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.User;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-public class CommentServiceModel {
+public class CommentListViewModel {
     private String id;
     private Article articleOwner;
     private User author;
     private String content;
     private LocalDate createdOn;
 
-    public CommentServiceModel() {
+    public CommentListViewModel() {
     }
 
     public String getId() {

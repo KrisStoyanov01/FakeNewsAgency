@@ -47,7 +47,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Content</th>
-                <th scope="col">Score</th>
                 <th scope="col">Author</th>
                 <th scope="col">Created on</th>
                 <th scope="col">Actions</th>
@@ -59,8 +58,6 @@
                 <tr>
                     <td scope="col" th:text="${iter.index + 1}"></td>
                     <td scope="col" th:text="${comment.content}"></td>
-                    <td scope="col" th:text="${comment.score}"></td>
-                    <!-- todo add actor hyperlink-->
                     <td scope="col" th:text="${comment.author.username}"></td>
                     <td scope="col" th:text="${comment.createdOn}"></td>
                     <td scope="col"><a class="btn btn-info"  th:href="@{/comments/edit/{id}(id=${comment.id})}" th:text="Edit"></a></td>
