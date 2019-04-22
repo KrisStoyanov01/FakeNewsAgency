@@ -1,9 +1,9 @@
 package fakenewsagency.repository;
 
-import fakenewsagency.domain.entites.Poll;
+import fakenewsagency.domain.entites.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PollRepository extends JpaRepository<Poll, String> {
+public interface GroupRepository extends JpaRepository<Group, String> {
 }

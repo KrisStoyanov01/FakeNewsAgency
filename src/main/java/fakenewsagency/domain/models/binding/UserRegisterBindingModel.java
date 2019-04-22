@@ -1,10 +1,13 @@
 package fakenewsagency.domain.models.binding;
 
+import fakenewsagency.domain.entites.Group;
+
 public class UserRegisterBindingModel {
     private String username;
     private String password;
     private String confirmPassword;
     private String email;
+    private Group group;
 
     public UserRegisterBindingModel() {
     }
@@ -39,5 +42,13 @@ public class UserRegisterBindingModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

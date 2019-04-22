@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body onload="hideAll()">
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container mt-4">
+
+            <table class="table mt-3" th:id="groupsTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Number of members</th>
+                    <th scope="col">Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="group, iter : ${groups}">
+                    <tr>
+                        <td scope="col" th:text="${iter.index + 1}"></td>
+                        <td scope="col" th:text="${group.name}"></td>
+                        <td scope="col" th:text="${group.users.size()}"></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/groups/details/{id}(id=${group.id})}" th:text="Details"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/groups/join/{id}(id=${group.id})}" th:text="Join"></a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>

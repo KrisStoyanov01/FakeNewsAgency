@@ -18,6 +18,7 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     private Set<Article> articles;
     private Set<Comment> comments;
+    private Group group;
 
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
@@ -79,6 +80,16 @@ public class User extends BaseEntity implements UserDetails {
         this.comments = comments;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     @Override
     @Column(name = "is_account_non_expired")
     public boolean isAccountNonExpired() {
@@ -128,4 +139,6 @@ public class User extends BaseEntity implements UserDetails {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
+
+
 }

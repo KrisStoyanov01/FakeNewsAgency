@@ -32,8 +32,6 @@
                         <!-- todo add actor hyperlink-->
                         <td scope="col" th:text="${user.articles.size()}"></td>
                         <td scope="col" th:text="${user.comments.size()}"></td>
-
-                        <td scope="col" th:text="0"></td>
                         <td scope="col"><a class="btn btn-info"  th:href="@{/users/details/{id}(id=${user.id})}" th:text="Profile"></a></td>
                     </tr>
                 </th:block>

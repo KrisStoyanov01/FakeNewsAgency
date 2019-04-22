@@ -1,8 +1,11 @@
 package fakenewsagency.service;
 
+import fakenewsagency.domain.entites.Group;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.entites.Role;
 import fakenewsagency.domain.models.service.UserServiceModel;
+import fakenewsagency.error.UserNotFoundException;
+import fakenewsagency.repository.GroupRepository;
 import fakenewsagency.repository.RoleRepository;
 import fakenewsagency.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -12,22 +15,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
+    private final GroupRepository groupRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, GroupRepository groupRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleRepository = roleRepository;
+        this.groupRepository = groupRepository;
     }
 
     @Override
@@ -39,10 +44,17 @@ public class UserServiceImpl implements UserService {
         this.insertUserRoles();
 
         if (this.userRepository.count() == 0) {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ROLE_ADMIN"));
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ROLE_USER"));
+            Role user1 = this.roleRepository.findByAuthority("ROLE_USER");
+            Role admin1 = this.roleRepository.findByAuthority("ROLE_ADMIN");
+            Set<Role> adder = new HashSet<>();
+            adder.add(user1);
+            adder.add(admin1);
+            user.setAuthorities(adder);
         } else {
-            user.getAuthorities().add(this.roleRepository.findByAuthority("ROLE_USER"));
+            Role user1 = this.roleRepository.findByAuthority("ROLE_USER");
+            Set<Role> adder = new HashSet<>();
+            adder.add(user1);
+            user.setAuthorities(adder);
         }
 
         this.userRepository.save(user);
@@ -52,6 +64,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserServiceModel> findAllUsers() {
         return this.userRepository.findAll()
+                .stream()
+                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserServiceModel> findAllUsersByGroupId(String groupId) {
+        Optional<Group> group = this.groupRepository.findById(groupId);
+        return this.userRepository.findUsersByGroup(group)
                 .stream()
                 .map(u -> this.modelMapper.map(u, UserServiceModel.class))
                 .collect(Collectors.toList());
@@ -69,6 +90,15 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findById(id)
                 .map(u -> this.modelMapper.map(u, UserServiceModel.class))
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
+    }
+
+    @Override
+    public UserServiceModel editUser(String id, UserServiceModel userServiceModel) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with the given id was not found!"));
+        user.setGroup(userServiceModel.getGroup());
+
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
     }
 
     @Override

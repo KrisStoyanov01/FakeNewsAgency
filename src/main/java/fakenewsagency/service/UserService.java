@@ -10,7 +10,11 @@ public interface UserService extends UserDetailsService {
 
     List<UserServiceModel> findAllUsers();
 
+    List<UserServiceModel> findAllUsersByGroupId(String groupId);
+
     UserServiceModel findUserByUserName(String username);
 
     UserServiceModel findUserById(String id);
+
+    UserServiceModel editUser(String id, UserServiceModel userServiceModel);
 }

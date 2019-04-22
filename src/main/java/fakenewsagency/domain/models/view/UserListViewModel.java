@@ -2,6 +2,7 @@ package fakenewsagency.domain.models.view;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.domain.entites.Group;
 import fakenewsagency.domain.entites.Role;
 
 import java.util.HashSet;
@@ -14,7 +15,7 @@ public class UserListViewModel {
     private String email;
     private Set<Article> articles;
     private Set<Comment> comments;
-
+    private Group group;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -113,5 +114,13 @@ public class UserListViewModel {
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

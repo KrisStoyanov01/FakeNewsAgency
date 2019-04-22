@@ -1,11 +1,13 @@
-package fakenewsagency.domain.models.service;
+package fakenewsagency.domain.models.binding;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.Comment;
 import fakenewsagency.domain.entites.Group;
+import fakenewsagency.domain.entites.Role;
+
 import java.util.Set;
 
-public class UserServiceModel {
+public class UserBindingModel {
     private String id;
     private String username;
     private String password;
@@ -13,9 +15,14 @@ public class UserServiceModel {
     private Set<Article> articles;
     private Set<Comment> comments;
     private Group group;
-    private Set<RoleServiceModel> authorities;
 
-    public UserServiceModel() {
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
+    private Set<Role> authorities;
+
+    public UserBindingModel() {
     }
 
     public String getId() {
@@ -66,19 +73,51 @@ public class UserServiceModel {
         this.comments = comments;
     }
 
-    public Set<RoleServiceModel> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<RoleServiceModel> authorities) {
-        this.authorities = authorities;
-    }
-
     public Group getGroup() {
         return group;
     }
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public Set<Role> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 }

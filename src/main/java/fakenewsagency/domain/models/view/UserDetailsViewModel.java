@@ -2,6 +2,7 @@ package fakenewsagency.domain.models.view;
 
 import fakenewsagency.domain.entites.Article;
 import fakenewsagency.domain.entites.Comment;
+import fakenewsagency.domain.entites.Group;
 import fakenewsagency.domain.entites.Role;
 
 import java.util.Set;
@@ -13,7 +14,7 @@ public class UserDetailsViewModel {
     private Set<Article> articles;
     private Set<Comment> comments;
     private Set<Role> authorities;
-
+    private Group group;
     public UserDetailsViewModel() {
     }
 
@@ -63,5 +64,13 @@ public class UserDetailsViewModel {
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
