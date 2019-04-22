@@ -49,7 +49,7 @@ public class GroupController extends BaseController {
 
     @PostMapping("/add")
     public ModelAndView addConfirm(@Valid @ModelAttribute(name = "bindingModel") GroupBindingModel groupBindingModel,
-                                   BindingResult bindingResult, ModelAndView modelAndView, Principal principal) {
+                                   BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("groupBindingModel", groupBindingModel);

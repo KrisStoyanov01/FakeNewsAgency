@@ -44,14 +44,4 @@ public class Article extends UserCreated {
     public void setViews(Integer views) {
         this.views = views;
     }
-
-    @Column(name = "comments")
-    @OneToMany(mappedBy = "articleOwner")
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
 }
