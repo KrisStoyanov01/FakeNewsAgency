@@ -138,7 +138,6 @@ public class ArticleController extends BaseController{
         ArticleServiceModel articleServiceModel = this.articleService.findArticleById(id);
         ArticleBindingModel articleBindingModel = this.modelMapper.map(articleServiceModel, ArticleBindingModel.class);
 
-        //model.setCategories(productServiceModel.getCategories().stream().map(c -> c.getName()).collect(Collectors.toList()));
 
         modelAndView.addObject("article", articleBindingModel);
         modelAndView.addObject("categories", ArticleCategory.values());

@@ -4,6 +4,7 @@ import fakenewsagency.domain.entites.Request;
 import fakenewsagency.domain.entites.User;
 import fakenewsagency.domain.models.binding.RequestBindingModel;
 import fakenewsagency.domain.models.service.RequestServiceModel;
+import fakenewsagency.domain.models.service.UserServiceModel;
 import fakenewsagency.error.RequestNotFoundException;
 import fakenewsagency.repository.RequestRepository;
 import fakenewsagency.repository.UserRepository;
@@ -29,8 +30,10 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public RequestServiceModel addRequest(RequestServiceModel requestServiceModel) {
+    public RequestServiceModel addRequest(RequestServiceModel requestServiceModel, UserServiceModel userServiceModel) {
+        User user = this.modelMapper.map(userServiceModel, User.class);
         Request request = this.modelMapper.map(requestServiceModel, Request.class);
+        request.setAuthor(user);
         try{
             this.requestRepository.saveAndFlush(request);
             return this.modelMapper.map(request, RequestServiceModel.class);

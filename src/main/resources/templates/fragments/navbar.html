@@ -28,6 +28,12 @@
                 <li sec:authorize="isAuthenticated()" class="nav-item active">
                     <a class="nav-link text-white" th:href="@{/groups/add}">Add Group <span class="sr-only">(current)</span></a>
                 </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item active">
+                    <a class="nav-link text-white" th:href="@{/requests/all}">Requests <span class="sr-only">(current)</span></a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item active">
+                    <a class="nav-link text-white" th:href="@{/requests/add}">Add Request <span class="sr-only">(current)</span></a>
+                </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item active">
                     <a class="nav-link text-white" th:href="@{/users/all}">Users<span class="sr-only">(current)</span></a>
                 </li>

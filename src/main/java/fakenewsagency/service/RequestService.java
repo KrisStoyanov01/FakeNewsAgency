@@ -9,7 +9,7 @@ import fakenewsagency.domain.models.service.UserServiceModel;
 import java.util.List;
 
 public interface RequestService {
-    RequestServiceModel addRequest(RequestServiceModel requestServiceModel);
+    RequestServiceModel addRequest(RequestServiceModel requestServiceModel, UserServiceModel userServiceModel);
 
     List<RequestServiceModel> findAllRequests();
 

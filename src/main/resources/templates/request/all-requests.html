@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/navbar}"></th:block>
+    </header>
+    <main>
+        <div class="container mt-4">
+
+            <table class="table mt-3" th:id="requestsTable">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="request, iter : ${requests}">
+                    <tr>
+                        <td scope="col" th:text="${iter.index + 1}"></td>
+                        <td scope="col" th:text="${request.title}"></td>
+                        <td scope="col" th:text="${request.author}"></td>
+                        <td scope="col" th:text="${request.createdOn}"></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/requests/details/{id}(id=${request.id})}" th:text="Details"></a></td>
+                        <td scope="col"><a class="btn btn-info"  th:href="@{/requests/delete/{id}(id=${request.id})}" th:text="Delete"></a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>
